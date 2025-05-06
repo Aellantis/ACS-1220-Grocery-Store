@@ -4,18 +4,19 @@
 <h1>New Item</h1>
 
 <form method="POST">
+    {{ form.hidden_tag() }}
+
     <fieldset>
         <legend>Please enter your information:</legend>
 
-
-
-        <!-- TODO: Remove the next paragraph and use the `form` object passed in 
-            from the route to render a form. -->
-        <p><em>Form fields go here!</em></p>
+        <p>{{ form.name.label }}<br>{{ form.name() }}</p>
+        <p>{{ form.price.label }}<br>{{ form.price() }}</p>
+        <p>{{ form.category.label }}<br>{{ form.category() }}</p>
+        <p>{{ form.photo_url.label }}<br>{{ form.photo_url() }}</p>
+        <p>{{ form.store.label }}<br>{{ form.store() }}</p>
 
         <input type="submit" value="Submit">
     </fieldset>
 </form>
-
 
 {% endblock %}
