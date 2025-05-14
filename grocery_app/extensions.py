@@ -2,29 +2,23 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from grocery_app.config import Config
 import os
 
+app = Flask(__name__)
+app.config.from_object(Config)
 
-db = SQLAlchemy()
-bcrypt = Bcrypt()
+
+db = SQLAlchemy(app)
+
 login_manager = LoginManager()
-
-# Set login view
 login_manager.login_view = 'auth.login'
+login_manager.init_app(app)
 
-def init_app(app):
-    """Initialize Flask extensions with the app."""
-    # Initialize SQLAlchemy
-    db.init_app(app)
-    
-    # Initialize Flask-Bcrypt
-    bcrypt.init_app(app)
-    
-    # Initialize Flask-Login
-    login_manager.init_app(app)
+from .models import User
 
-    from grocery_app.models import User
-    
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.query.get(int(user_id))
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+
+bcrypt = Bcrypt(app)
